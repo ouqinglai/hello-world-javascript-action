@@ -1,0 +1,19 @@
+on: [push]
+
+jobs:
+  hello_world_job:
+    runs-on: ubuntu-latest
+    name: A job to say hello
+    steps:
+      # 要使用此仓库的私有操作，
+      # 您必须检出仓库
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Hello world action step
+        uses: ./ # Uses an action in the root directory
+        id: hello
+        with:
+          who-to-greet: 'Mona the Octocat'
+      # 使用来自 `hello` 步骤的输出
+      - name: Get the output time
+        run: echo "The time was ${{ steps.hello.outputs.time }}"
