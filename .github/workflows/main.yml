@@ -1,19 +1,20 @@
-on: [push]
+on: [push] # push 操作执行自动化
 
-jobs:
+jobs: # 任务
   hello_world_job:
     runs-on: ubuntu-latest
     name: A job to say hello
     steps:
-      # 要使用此仓库的私有操作，
-      # 您必须检出仓库
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Hello world action step
-        uses: ./ # Uses an action in the root directory
-        id: hello
-        with:
-          who-to-greet: 'Mona the Octocat'
-      # 使用来自 `hello` 步骤的输出
-      - name: Get the output time
-        run: echo "The time was ${{ steps.hello.outputs.time }}"
+      # 要使用此仓库的私有操作，必须检出仓库（未发布的actions，需要用actions/checkout）
+      # 此操作会重新拉取仓库
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Hello world action step
+      id: hello123
+      # uses: actions/hello-world-javascript-action@v1
+      uses: ./ # 引入使用自定义的脚本,相对路径为私有操作，非第三方引用
+      with:
+        who-to-greet: '测试'
+    # Use the output from the `hello` step
+    - name: 获取输出时间
+      run: echo "时间是 ${{ steps.hello123.outputs.time }}"
